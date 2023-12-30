@@ -42,6 +42,7 @@ const LoginPage = () => {
     if (error) {
       form.reset();
       setSubmitError(error.message);
+      return;
     }
     router.replace("/dashboard");
   };
@@ -69,7 +70,7 @@ const LoginPage = () => {
           disabled={isLoading}
           control={form.control}
           name="email"
-          render={(field) => {
+          render={({ field }) => {
             return (
               <FormItem>
                 <FormControl>
@@ -85,7 +86,7 @@ const LoginPage = () => {
           disabled={isLoading}
           control={form.control}
           name="password"
-          render={(field) => {
+          render={({ field }) => {
             return (
               <FormItem>
                 <FormControl>
