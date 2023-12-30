@@ -18,6 +18,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
+import { actionLoginUser } from "@/lib/server-actions/auth-actions";
 
 const LoginPage = () => {
   const [submitError, setSubmitError] = useState("");
@@ -37,7 +38,12 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
     formData
   ) => {
-    console.log(formData);
+    const { error } = await actionLoginUser(formData);
+    if (error) {
+      form.reset();
+      setSubmitError(error.message);
+    }
+    router.replace("/dashboard");
   };
 
   return (
@@ -104,9 +110,9 @@ const LoginPage = () => {
           {!isLoading ? "Login" : <Loader />}
         </Button>
         <span className="self-center">
-          Dont have an account?
-          <Link href={"/signup"} className="text-primary">
-            Sign UP
+          Dont have an account ?
+          <Link href={"/signup"} className="text-primary ml-3">
+            Sign Up
           </Link>
         </span>
       </form>
