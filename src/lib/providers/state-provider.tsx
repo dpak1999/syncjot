@@ -17,7 +17,12 @@ interface AppState {
   workspaces: appWorkspacesType[] | [];
 }
 
-type Action = { type: "ADD_WORKSPACE"; payload: appWorkspacesType };
+type Action =
+  | { type: "ADD_WORKSPACE"; payload: appWorkspacesType }
+  | {
+      type: "SET_WORKSPACES";
+      payload: { workspaces: appWorkspacesType[] | [] };
+    };
 
 const initialState: AppState = { workspaces: [] };
 
@@ -30,6 +35,11 @@ const appReducer = (
       return {
         ...state,
         workspaces: [...state.workspaces, action.payload],
+      };
+    case "SET_WORKSPACES":
+      return {
+        ...state,
+        workspaces: action.payload.workspaces,
       };
     default:
       return initialState;
@@ -78,10 +88,6 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
         return urlSegments[3];
       }
   }, [pathname]);
-
-  useEffect(() => {
-    console.log("App State Changed", state);
-  }, [state]);
 
   return (
     <AppStateContext.Provider
